@@ -5,7 +5,9 @@
 Dark, futuristic single-page marketing site for SRF Corporation — laboratory
 solutions for the pharmaceutical, life science, diagnostic and research sectors
 of Bangladesh. Built around the brand mark (angular S-bolt in a hexagon, deep
-royal blue → light blue on black).
+royal blue → light blue on black). Ships with a **light + dark theme** and a
+toggle in the header (remembers the visitor's choice, defaults to their
+system preference).
 
 ## Run it
 
@@ -48,7 +50,8 @@ CTA → Contact (real address, phone, emails + form).
   `assets/` and swap the `<img src="assets/logo.svg">` references (header,
   hero, about panel, footer).
 - **Colors** — edit the design tokens at the top of `css/style.css`
-  (`--blue`, `--blue-2`, `--cyan`, background glows).
+  (`--blue`, `--blue-2`, `--cyan`, background glows). Dark values live in
+  `:root`, light values in the `html[data-theme="light"]` block.
 - **Fonts** — Montserrat (headings), Inter (body), Comfortaa (accents), loaded
   from Google Fonts in `index.html`.
 
@@ -60,5 +63,9 @@ CTA → Contact (real address, phone, emails + form).
   deployed web-app URL, the form falls back to opening the visitor's email
   client. A "Request via WhatsApp" button sits under the form as a second
   channel (number: +880 1743-034272). A hidden honeypot field filters bots.
+- **Themes** — the header toggle switches light/dark, persists the choice in
+  `localStorage` (`srf-theme`) and falls back to `prefers-color-scheme`. Dark
+  is the default for first visits without a system preference; hero particles
+  and the browser UI color (`theme-color`) follow the active theme too.
 - Animations respect `prefers-reduced-motion`; the site is fully usable with
-  JavaScript disabled.
+  JavaScript disabled (dark theme, no toggle).
