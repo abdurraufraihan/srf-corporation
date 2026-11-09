@@ -1122,6 +1122,49 @@ a:hover { color: var(--cyan); }
 .form-note.is-success { color: #4ADE80; }
 .form-note.is-error   { color: #F87171; }
 
+/* Honeypot (spam trap) — present for bots, out of reach for humans */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Divider between the form and the WhatsApp channel */
+.form-alt {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 18px 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.form-alt::before,
+.form-alt::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* WhatsApp lead channel */
+.btn-whatsapp {
+  margin-top: 12px;
+  background: rgba(37, 211, 102, 0.1);
+  color: #25D366;
+  border-color: rgba(37, 211, 102, 0.4);
+}
+.btn-whatsapp:hover {
+  background: #25D366;
+  color: #06130B;
+  border-color: #25D366;
+  box-shadow: 0 6px 22px rgba(37, 211, 102, 0.3);
+  transform: translateY(-2px);
+}
+
 /* ==========================================================================
    Footer
    ========================================================================== */

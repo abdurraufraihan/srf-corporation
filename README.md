@@ -23,6 +23,7 @@ srf-corporation/
 ├── index.html        # all sections & content (from the company profile)
 ├── css/style.css     # theme, layout, animations (design tokens at the top)
 ├── js/main.js        # particles, reveals, counters, tabs, nav, form (no dependencies)
+├── tools/lead-form.gs # lead backend: paste into a Google Sheet's Apps Script & deploy
 └── assets/
     ├── logo.svg      # brand mark (SVG recreation of the original)
     └── favicon.svg   # browser-tab icon
@@ -53,8 +54,11 @@ CTA → Contact (real address, phone, emails + form).
 
 ## Notes
 
-- The contact form validates in the browser, then opens the visitor's email
-  client with a pre-filled message to `sales@srfbd.com`. To collect submissions
-  without email, wire the form to Formspree/Netlify Forms or a backend.
+- **Lead collection** — the contact form POSTs to a Google Apps Script web app
+  (`tools/lead-form.gs`) that appends every lead to a Google Sheet and emails
+  `sales@srfbd.com`. Until `LEADS_ENDPOINT` in `js/main.js` is set to the
+  deployed web-app URL, the form falls back to opening the visitor's email
+  client. A "Request via WhatsApp" button sits under the form as a second
+  channel (number: +880 1743-034272). A hidden honeypot field filters bots.
 - Animations respect `prefers-reduced-motion`; the site is fully usable with
   JavaScript disabled.

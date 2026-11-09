@@ -273,10 +273,20 @@
     });
   })();
 
-  /* ---------- Contact form (opens the visitor's email client) ---------- */
+  /* ---------- Contact form (lead capture → Google Sheet via Apps Script) ---------- */
+  var LEADS_ENDPOINT = ''; // Apps Script web-app URL (ends in /exec); '' = mailto fallback
   var form = document.getElementById('contactForm');
   if (form) {
     var note = form.querySelector('.form-note');
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var setNote = function (text, kind) {
+      note.textContent = text;
+      note.className = 'form-note' + (kind ? ' is-' + kind : '');
+    };
+    var field = function (id) {
+      var el = form.querySelector('#' + id);
+      return el ? String(el.value || '').trim() : '';
+    };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var invalid = Array.prototype.filter.call(
@@ -284,30 +294,57 @@
         function (f) { return f.required && !f.value.trim(); }
       );
       if (invalid.length) {
-        note.textContent = 'Please fill in all the highlighted fields.';
-        note.classList.add('is-error');
-        note.classList.remove('is-success');
+        setNote('Please fill in all the highlighted fields.', 'error');
         invalid[0].focus();
         return;
       }
-      var email = form.querySelector('#cf-email');
-      if (email && email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-        note.textContent = 'That email address does not look right — please check it.';
-        note.classList.add('is-error');
-        note.classList.remove('is-success');
-        email.focus();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field('cf-email'))) {
+        setNote('That email address does not look right — please check it.', 'error');
+        var emailEl = form.querySelector('#cf-email');
+        if (emailEl) { emailEl.focus(); }
         return;
       }
-      var name = form.querySelector('#cf-name').value.trim();
-      var subject = form.querySelector('#cf-subject').value.trim();
-      var message = form.querySelector('#cf-message').value.trim();
-      var mailto = 'mailto:sales@srfbd.com'
-        + '?subject=' + encodeURIComponent('Website inquiry: ' + subject)
-        + '&body=' + encodeURIComponent(message + '\n\n— ' + name + ' (' + email.value + ')');
-      note.textContent = 'Opening your email app… or write to us directly at sales@srfbd.com';
-      note.classList.add('is-success');
-      note.classList.remove('is-error');
-      window.location.href = mailto;
+      var payload = {
+        name: field('cf-name'),
+        company: field('cf-company'),
+        phone: field('cf-phone'),
+        email: field('cf-email'),
+        subject: field('cf-subject'),
+        message: field('cf-message'),
+        _gotcha: field('cf-gotcha'),
+        page: window.location.href.split('#')[0],
+        referrer: document.referrer || ''
+      };
+      if (!LEADS_ENDPOINT) { // fallback until the Apps Script endpoint is deployed
+        window.location.href = 'mailto:sales@srfbd.com'
+          + '?subject=' + encodeURIComponent('Website inquiry: ' + payload.subject)
+          + '&body=' + encodeURIComponent(payload.message + '\n\n— ' + payload.name
+            + ' (' + payload.email + ')'
+            + (payload.company ? ', ' + payload.company : ''));
+        setNote('Opening your email app… or write to us directly at sales@srfbd.com', 'success');
+        return;
+      }
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+      setNote('Sending your request…', '');
+      fetch(LEADS_ENDPOINT, {
+        method: 'POST',
+        // text/plain keeps this a "simple request" — no CORS preflight needed
+        // by the Apps Script web app.
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+        .then(function (r) { return r.text(); })
+        .then(function (t) {
+          if (t.trim() !== 'ok') { throw new Error('rejected'); }
+          setNote('Thank you — your request is in. Our team will get back to you shortly.', 'success');
+          form.reset();
+        })
+        .catch(function () {
+          setNote('Something went wrong — please email sales@srfbd.com or use the WhatsApp button below.', 'error');
+        })
+        .then(function () { // always re-enable the button (ES5-friendly "finally")
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Request'; }
+        });
     });
   }
 })();
