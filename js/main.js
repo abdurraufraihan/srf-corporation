@@ -61,6 +61,23 @@
     });
   }
 
+  /* No explicit choice yet → keep following the system preference live
+     (e.g. OS switches to dark at sunset → site switches with it). */
+  function storedTheme() {
+    try {
+      var t = localStorage.getItem('srf-theme');
+      return (t === 'light' || t === 'dark') ? t : null;
+    } catch (e) { return null; }
+  }
+  var themeMQ = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)') : null;
+  if (themeMQ) {
+    var onSystemTheme = function (e) {
+      if (!storedTheme()) applyTheme(e.matches ? 'light' : 'dark');
+    };
+    if (themeMQ.addEventListener) themeMQ.addEventListener('change', onSystemTheme);
+    else if (themeMQ.addListener) themeMQ.addListener(onSystemTheme);   // old Safari
+  }
+
   /* ---------- Reveal on scroll ---------- */
   var revealEls = document.querySelectorAll('.reveal');
   revealEls.forEach(function (el) {

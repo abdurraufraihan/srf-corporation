@@ -63,9 +63,10 @@ CTA → Contact (real address, phone, emails + form).
   deployed web-app URL, the form falls back to opening the visitor's email
   client. A "Request via WhatsApp" button sits under the form as a second
   channel (number: +880 1743-034272). A hidden honeypot field filters bots.
-- **Themes** — the header toggle switches light/dark, persists the choice in
-  `localStorage` (`srf-theme`) and falls back to `prefers-color-scheme`. Dark
-  is the default for first visits without a system preference; hero particles
-  and the browser UI color (`theme-color`) follow the active theme too.
+- **Themes** — the system preference (`prefers-color-scheme`) is the default
+  and is followed live until the visitor toggles; the toggle's choice is then
+  persisted in `localStorage` (`srf-theme`). Dark is the fallback when the OS
+  reports no preference; hero particles and the browser UI color
+  (`theme-color`) follow the active theme too.
 - Animations respect `prefers-reduced-motion`; the site is fully usable with
   JavaScript disabled (dark theme, no toggle).
