@@ -36,16 +36,14 @@ srf-corporation/
 Hero (real KPIs: 100+ clients, 20+ yrs, 4 sectors, 6 focus areas) → capability
 marquee → About → Vision, Mission & 5 Core Values → 6 Focus Areas (QC,
 Microbiology, R&D, Biotech, Molecular, Engineering) → sector stats → Products &
-Principals (8 categories) → Why Choose Us → 8-member Leadership Team → Clients
+Principals (8 categories) → Why Choose Us → Clients
 (tabbed: 34 pharma, 25 universities, 16 research institutes, 32 healthcare) →
 CTA → Contact (real address, phone, emails + form).
 
 ## Customizing
 
 - **Content** — all copy lives in `index.html`; remaining `TODO`-free. Client
-  lists, team, stats and contact details match the official company profile.
-- **Team photos** — replace the initials avatars by dropping photos into
-  `assets/` and swapping the `.team-avatar` spans for `<img>` elements.
+  lists, stats and contact details match the official company profile.
 - **Using the original logo file** — drop the original `logo.png` into
   `assets/` and swap the `<img src="assets/logo.svg">` references (header,
   hero, about panel, footer).
