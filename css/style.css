@@ -316,30 +316,38 @@ a:hover { color: var(--cyan); }
   color: var(--ink);
 }
 .brand-mark {
-  width: 42px;
-  height: 42px;
-  filter: drop-shadow(0 0 10px rgba(33, 150, 243, 0.45));
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px --cyan);
   transition: transform 0.4s var(--ease-out);
 }
 .brand:hover .brand-mark { transform: rotate(-8deg) scale(1.05); }
 .brand:hover { color: var(--ink); }
 
-.brand-text { display: flex; flex-direction: column; line-height: 1.05; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.1; }
 .brand-name {
   font-family: var(--font-head);
   font-weight: 900;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   letter-spacing: 0.02em;
-  color: var(--ink);
+  color: var(--blue);;
 }
 .brand-sub {
   font-family: var(--font-head);
   font-weight: 700;
-  font-size: 0.62rem;
-  letter-spacing: 0.42em;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  color: var(--blue);
+}
+.brand-tag {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--muted);
-  transform: translateX(1px);
+  color: var(--cyan);
+  margin-top: 2px;
 }
 
 .site-nav { display: flex; align-items: center; gap: 28px; }
@@ -559,9 +567,10 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 
 .emblem {
   position: absolute;
-  inset: 18%;
-  width: 64%;
-  height: 64%;
+  inset: 9%;
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
   z-index: 2;
   filter: drop-shadow(0 0 34px rgba(33, 150, 243, 0.55));
   animation: float 7s ease-in-out infinite;
@@ -576,7 +585,7 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
   position: absolute;
   inset: 24%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(33, 150, 243, 0.28) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(168, 27, 44, 0.28) 0%, transparent 65%);
   filter: blur(10px);
   animation: pulse 5s ease-in-out infinite;
 }
@@ -717,7 +726,7 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
   overflow: hidden;
 }
 .about-logo {
-  width: 52%;
+  width: 60%;
   filter: drop-shadow(0 18px 50px rgba(21, 101, 216, 0.5));
   animation: float 7s ease-in-out infinite;
 }

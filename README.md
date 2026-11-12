@@ -27,7 +27,7 @@ srf-corporation/
 ├── js/main.js        # particles, reveals, counters, tabs, nav, form (no dependencies)
 ├── tools/lead-form.gs # lead backend: paste into a Google Sheet's Apps Script & deploy
 └── assets/
-    ├── logo.svg      # brand mark (SVG recreation of the original)
+    ├── logo.png      # brand mark (SVG recreation of the original)
     └── favicon.svg   # browser-tab icon
 ```
 
