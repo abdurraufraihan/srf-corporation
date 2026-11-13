@@ -312,7 +312,7 @@ a:hover { color: var(--cyan); }
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 5px;
   color: var(--ink);
 }
 .brand-mark {
@@ -1454,4 +1454,40 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   color: #fff;
+}
+
+/* Tooltip beside the floating WhatsApp button */
+.whatsapp-float-tooltip {
+  position: absolute;
+  right: calc(100% + 16px);
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+.whatsapp-float-tooltip::after {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: var(--bg-3);
+}
+.whatsapp-float:hover .whatsapp-float-tooltip,
+.whatsapp-float:focus-visible .whatsapp-float-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
 }
