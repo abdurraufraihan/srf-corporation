@@ -667,7 +667,8 @@
           </div>
         </div>
 
-        <form class="contact-form reveal" data-delay="2" id="contactForm" novalidate>
+        <form class="contact-form reveal" data-delay="2" id="contactForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
+          <input type="hidden" name="access_key" value="52fd2fa4-c118-4503-bcbb-390ad25843f5">
           <h3 class="form-title">Request a Quote or Consultation</h3>
           <div class="form-row">
             <div class="form-field">
@@ -699,7 +700,7 @@
           </div>
           <div class="hp-field" aria-hidden="true">
             <label for="cf-gotcha">Leave this field empty</label>
-            <input id="cf-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+            <input id="cf-gotcha" name="botcheck" type="text" tabindex="-1" autocomplete="off">
           </div>
           <button type="submit" class="btn btn-primary btn-block">Send Request</button>
           <p class="form-note" role="status" aria-live="polite"></p>

@@ -25,7 +25,6 @@ srf-corporation/
 ├── index.html        # all sections & content (from the company profile)
 ├── css/style.css     # theme, layout, animations (design tokens at the top)
 ├── js/main.js        # particles, reveals, counters, tabs, nav, form (no dependencies)
-├── tools/lead-form.gs # lead backend: paste into a Google Sheet's Apps Script & deploy
 └── assets/
     ├── logo.png      # brand mark (SVG recreation of the original)
     └── favicon.svg   # browser-tab icon
@@ -44,9 +43,6 @@ CTA → Contact (real address, phone, emails + form).
 
 - **Content** — all copy lives in `index.html`; remaining `TODO`-free. Client
   lists, stats and contact details match the official company profile.
-- **Using the original logo file** — drop the original `logo.png` into
-  `assets/` and swap the `<img src="assets/logo.svg">` references (header,
-  hero, about panel, footer).
 - **Colors** — edit the design tokens at the top of `css/style.css`
   (`--blue`, `--blue-2`, `--cyan`, background glows). Dark values live in
   `:root`, light values in the `html[data-theme="light"]` block.
@@ -55,12 +51,14 @@ CTA → Contact (real address, phone, emails + form).
 
 ## Notes
 
-- **Lead collection** — the contact form POSTs to a Google Apps Script web app
-  (`tools/lead-form.gs`) that appends every lead to a Google Sheet and emails
-  `sales@srfbd.com`. Until `LEADS_ENDPOINT` in `js/main.js` is set to the
-  deployed web-app URL, the form falls back to opening the visitor's email
-  client. A "Request via WhatsApp" button sits under the form as a second
-  channel (number: +880 1743-034272). A hidden honeypot field filters bots.
+- **Lead collection** — the contact form submits to
+  [Web3Forms](https://web3forms.com) (`https://api.web3forms.com/submit`) via
+  the `access_key` hidden input in `index.html`; submissions are delivered to
+  the email address that access key is registered to. The plain form `action`
+  works even without JavaScript, and `js/main.js` enhances it with a `fetch`
+  POST for inline success/error messages. A "Request via WhatsApp" button
+  sits under the form as a second channel (number: +880 1743-034272). A
+  hidden honeypot field filters bots.
 - **Themes** — the system preference (`prefers-color-scheme`) is the default
   and is followed live until the visitor toggles; the toggle's choice is then
   persisted in `localStorage` (`srf-theme`). Dark is the fallback when the OS

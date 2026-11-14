@@ -320,12 +320,13 @@
     });
   })();
 
-  /* ---------- Contact form (lead capture → Google Sheet via Apps Script) ---------- */
-  var LEADS_ENDPOINT = ''; // Apps Script web-app URL (ends in /exec); '' = mailto fallback
+  /* ---------- Contact form (Web3Forms → email to sales@) ---------- */
+  var WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
   var form = document.getElementById('contactForm');
   if (form) {
     var note = form.querySelector('.form-note');
     var submitBtn = form.querySelector('button[type="submit"]');
+    var accessKeyEl = form.querySelector('input[name="access_key"]');
     var setNote = function (text, kind) {
       note.textContent = text;
       note.className = 'form-note' + (kind ? ' is-' + kind : '');
@@ -351,38 +352,34 @@
         if (emailEl) { emailEl.focus(); }
         return;
       }
+      if (field('cf-gotcha')) {
+        // Honeypot filled — almost certainly a bot. Pretend success, send nothing.
+        setNote('Thank you — your request is in. Our team will get back to you shortly.', 'success');
+        form.reset();
+        return;
+      }
       var payload = {
+        access_key: accessKeyEl ? accessKeyEl.value : '',
+        from_name: 'SRF Corporation — Website Inquiry',
         name: field('cf-name'),
         company: field('cf-company'),
         phone: field('cf-phone'),
         email: field('cf-email'),
         subject: field('cf-subject'),
         message: field('cf-message'),
-        _gotcha: field('cf-gotcha'),
         page: window.location.href.split('#')[0],
         referrer: document.referrer || ''
       };
-      if (!LEADS_ENDPOINT) { // fallback until the Apps Script endpoint is deployed
-        window.location.href = 'mailto:sales@srfbd.com'
-          + '?subject=' + encodeURIComponent('Website inquiry: ' + payload.subject)
-          + '&body=' + encodeURIComponent(payload.message + '\n\n— ' + payload.name
-            + ' (' + payload.email + ')'
-            + (payload.company ? ', ' + payload.company : ''));
-        setNote('Opening your email app… or write to us directly at sales@srfbd.com', 'success');
-        return;
-      }
       if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
       setNote('Sending your request…', '');
-      fetch(LEADS_ENDPOINT, {
+      fetch(WEB3FORMS_ENDPOINT, {
         method: 'POST',
-        // text/plain keeps this a "simple request" — no CORS preflight needed
-        // by the Apps Script web app.
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
       })
-        .then(function (r) { return r.text(); })
-        .then(function (t) {
-          if (t.trim() !== 'ok') { throw new Error('rejected'); }
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (!data || !data.success) { throw new Error('rejected'); }
           setNote('Thank you — your request is in. Our team will get back to you shortly.', 'success');
           form.reset();
         })
