@@ -346,10 +346,23 @@
         invalid[0].focus();
         return;
       }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field('cf-email'))) {
-        setNote('That email address does not look right — please check it.', 'error');
-        var emailEl = form.querySelector('#cf-email');
+      var email = field('cf-email');
+      var phone = field('cf-phone');
+      var emailEl = form.querySelector('#cf-email');
+      var phoneEl = form.querySelector('#cf-phone');
+      if (!email && !phone) {
+        setNote('Please add your email or phone number so we can reach you.', 'error');
         if (emailEl) { emailEl.focus(); }
+        return;
+      }
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setNote('That email address does not look right — please check it.', 'error');
+        if (emailEl) { emailEl.focus(); }
+        return;
+      }
+      if (phone && phone.replace(/\D/g, '').length < 6) {
+        setNote('That phone number does not look right — please check it.', 'error');
+        if (phoneEl) { phoneEl.focus(); }
         return;
       }
       if (field('cf-gotcha')) {
@@ -363,13 +376,14 @@
         from_name: 'SRF Corporation — Website Inquiry',
         name: field('cf-name'),
         company: field('cf-company'),
-        phone: field('cf-phone'),
-        email: field('cf-email'),
+        phone: phone,
         subject: field('cf-subject'),
         message: field('cf-message'),
         page: window.location.href.split('#')[0],
         referrer: document.referrer || ''
       };
+      // Web3Forms treats "email" as the reply-to address — only send it when given.
+      if (email) { payload.email = email; }
       if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
       setNote('Sending your request…', '');
       fetch(WEB3FORMS_ENDPOINT, {
