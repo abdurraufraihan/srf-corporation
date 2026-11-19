@@ -565,6 +565,8 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 
 .emblem-wrap { position: relative; width: min(400px, 76vw); aspect-ratio: 1; }
 
+.emblem-figure { position: absolute; inset: 0; }
+
 .emblem {
   position: absolute;
   inset: 9%;
@@ -580,7 +582,7 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 
 .spin-slow { transform-origin: 240px 240px; animation: spin 40s linear infinite; }
 
-.emblem-wrap::before {              /* core glow */
+.emblem-figure::before {            /* core glow */
   content: "";
   position: absolute;
   inset: 24%;
@@ -616,8 +618,10 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
   background: var(--cyan);
   box-shadow: 0 0 8px var(--cyan);
 }
-.chip-a { top: 16%; right: -6%; animation: float 6s 0.5s ease-in-out infinite; }
-.chip-b { bottom: 14%; left: -8%;  animation: float 8s 1.2s ease-in-out infinite; }
+.chip-a { top: -12%; right: -4%; animation: float 6s 0.5s ease-in-out infinite; }
+.chip-b { bottom: -12%; left: -4%;  animation: float 8s 1.2s ease-in-out infinite; }
+
+.chips-row { display: contents; }   /* transparent on desktop; flex row on mobile */
 
 /* --- Scroll hint --- */
 .scroll-hint {
@@ -1356,7 +1360,17 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 @media (max-width: 1080px) {
   .hero-inner    { grid-template-columns: 1fr; gap: 24px; }
   .hero-visual   { order: -1; margin-top: 10px; }
-  .emblem-wrap   { width: min(300px, 60vw); }
+  .emblem-wrap   {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    aspect-ratio: auto;
+  }
+  .emblem-figure { position: relative; inset: auto; width: min(300px, 60vw); aspect-ratio: 1; }
+  .chips-row     { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .float-chip    { position: static; }
   .hero-stats    { grid-template-columns: repeat(4, 1fr); gap: 20px 16px; }
   .about-grid    { grid-template-columns: 1fr; gap: 56px; }
   .about-panel   { margin-inline: auto; }
@@ -1402,6 +1416,8 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 @media (max-width: 720px) {
   .section        { padding: 80px 0; }
   .hero           { padding-top: calc(var(--header-h) + 16px); min-height: auto; }
+  .emblem-figure  { width: min(250px, 62vw); }
+  .float-chip     { font-size: 0.66rem; padding: 7px 12px; }
   .hero-stats     { grid-template-columns: repeat(2, 1fr); padding: 18px; }
   .hero-actions   { margin-bottom: 38px; }
   .scroll-hint    { display: none; }
